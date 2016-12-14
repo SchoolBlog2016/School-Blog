@@ -1,8 +1,10 @@
 package com.SchoolBlog.service;
 
+import java.util.Map;
+
 public interface LikeService {
 	
 	public boolean isLike(int articald, int userId);
 
-	public boolean updateLike(int articalId, int userId, boolean isAddLike);
+	public Map<String, Object> updateLike(int articalId, int userId, boolean isAddLike);
 }

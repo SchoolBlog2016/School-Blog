@@ -17,5 +17,11 @@
 	</bean>
 	<bean id="commentService" class="com.SchoolBlog.service.Impl.CommentServiceImpl">
 	</bean>
+	<bean id="answerService" class="com.SchoolBlog.service.Impl.AnswerServiceImpl">
+	</bean>
+	<bean id="problemService" class="com.SchoolBlog.service.Impl.ProblemServiceImpl">
+	</bean>
+	<bean id="lostService" class="com.SchoolBlog.service.Impl.LostServiceImpl">
+	</bean>
 	
 </beans>

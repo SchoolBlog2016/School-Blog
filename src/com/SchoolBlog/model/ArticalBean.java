@@ -1,5 +1,7 @@
 package com.SchoolBlog.model;
 
+import java.util.Date;
+
 public class ArticalBean {
 	private int id;
 	private int userId;
@@ -8,10 +10,13 @@ public class ArticalBean {
 	private int commentNum;
 	private int lookNum;
 	private int likeNum;
-	private String creatTime;
-	private String updateTime;
+	private Date creatDate;
+	private Date creatTime;
+	private Date updateDate;
+	private Date updateTime;
 	private int status;
 	private int type;
+	private UserBean user;
 	
 	public int getLookNum() {
 		return lookNum;
@@ -67,20 +72,40 @@ public class ArticalBean {
 	public void setLikeNum(int likeNum) {
 		this.likeNum = likeNum;
 	}
-	public String getCreatTime() {
+	public Date getCreatTime() {
 		return creatTime;
 	}
-	public void setCreatTime(String creatTime) {
+	public void setCreatTime(Date creatTime) {
 		this.creatTime = creatTime;
 	}
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 	public String toString(int artical_id,String artical_username){
 		return "文章id为：" + artical_id +"  作者是：" + artical_username;
 	}
+	public Date getCreatDate() {
+		return creatDate;
+	}
+	public void setCreatDate(Date creatDate) {
+		this.creatDate = creatDate;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+	public UserBean getUser() {
+		return user;
+	}
+	public void setUser(UserBean user) {
+		this.user = user;
+	}
+	
+	
 	
 }

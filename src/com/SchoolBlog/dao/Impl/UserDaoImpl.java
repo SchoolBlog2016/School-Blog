@@ -13,7 +13,7 @@ import com.SchoolBlog.model.UserBean;
 
 public class UserDaoImpl implements UserDao {
 	
-	private JdbcTemplate jdbcTemplate=new JdbcTemplate();
+	private JdbcTemplate jdbcTemplate;
 	
 
 	public JdbcTemplate getJdbcTemplate() {
@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 		try{
 		      String sql="INSERT INTO tb_user(user_xuehao,user_password,user_realname,user_sex,user_info,user_grade) "
 				+ " VALUES(?,?,?,?,?,?)";
-		      Object[] params=new Object[]{Integer.parseInt(user.getXuehao()),user.getPassword(),user.getRealname(),user.getSex(),user.getInfo(),user.getGrade()};
+		      Object[] params=new Object[]{user.getXuehao(),user.getPassword(),user.getRealname(),user.getSex(),user.getInfo(),user.getGrade()};
 		      this.jdbcTemplate.update(sql,params);
 		      String resultSql="select user_id from tb_user where user_xuehao=?";
 		      return (int)this.jdbcTemplate.queryForObject(resultSql,
@@ -60,8 +60,8 @@ public class UserDaoImpl implements UserDao {
 	public Integer alertUserInfo(UserBean user) {
 		// 修改用户信息，成功返回用户id，失败返回-1
 		try{
-			String sql="UPDATE user SET user_password=？,user_sex=？,user_info=？ WHERE user_id=?";
-		    this.jdbcTemplate.update(sql, new Object[]{user.getPassword(),user.getSex(),user.getInfo(),user.getId()});
+			String sql="UPDATE tb_user SET user_info=? WHERE user_id=?";
+		    this.jdbcTemplate.update(sql, new Object[]{user.getInfo(),user.getId()});
 		    return (Integer)user.getId();
 		}catch(Exception e){
 			e.getMessage();
@@ -98,15 +98,15 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public String getRealnameById(int userId) {
 		// TODO Auto-generated method stub
-		String sql="select user+realname from tb_user where user_id=?";
-		String realname = this.jdbcTemplate.queryForObject(sql, String.class);
-		return realname;
+		String sql="select user_realname from tb_user where user_id=?";
+		return this.jdbcTemplate.queryForObject(
+				sql,new Object[]{userId}, String.class);
 	}
 
 	@Override
 	public UserBean getAllInfo(int userId) {
 		// TODO Auto-generated method stub
-		String sql="seclect * from tb_user where user_id=?";
+		String sql="select * from tb_user where user_id=?";
 		UserBean user=new UserBean();
 		user.setId(userId);
 		this.jdbcTemplate.query(sql, new Object[]{userId}, new RowCallbackHandler(){
@@ -120,8 +120,20 @@ public class UserDaoImpl implements UserDao {
 				user.setInfo(rs.getString("user_info"));
 				user.setLike(rs.getInt("user_like"));
 				user.setScore(rs.getInt("user_score"));
+				user.setGrade(rs.getString("user_grade"));
 			}
 		});
 		return user;
+	}
+
+	@Override
+	public int getUserId(String xuehao) {
+		try{
+			String sql="SELECT user_id FROM tb_user WHERE user_xuehao=?";
+			return this.jdbcTemplate.queryForObject(sql, new Object[]{xuehao}, Integer.class);
+		}catch(Exception e){
+			e.getMessage();
+			return 0;
+		}
 	}
 }

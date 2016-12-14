@@ -14,11 +14,11 @@ public interface ArticalService {
 	
 	public Map<String, Object>reSaveArtical(ArticalBean artical);
 	
-	public Map<String, Object> refrashArticalList();
+	public Map<String, Object> refrashArticalList(int type);
 	
-	public Map<String, Object> getMyArtical(int userId);
+	public Map<String, Object> getMyArtical(int userId,int isPublish);
 	
-	public Map<String, Object> getNextArticalListBytime(int articalId);
+	public Map<String, Object> getNextArticalListBytime(int articalId,int type);
 	
 	public Map<String, List<ArticalBean>>getArticalListByLike(int page,Date time);
 	

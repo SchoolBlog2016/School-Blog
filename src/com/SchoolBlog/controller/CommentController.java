@@ -27,7 +27,8 @@ public class CommentController {
 	public Map<String, Object> publishComment(
 			@RequestParam("userId") int userId,
 			@RequestParam("articalId") int articalId,
-			@RequestParam("content") String content){
+			@RequestParam("content") String content,
+			@RequestParam("replyFloor") int replyFloor){
 		if(content.isEmpty()){
 			return ResultHandler.handleJson("info", "评论内容不能为空", FinalModel.INTERNET_ERREO);
 		}
@@ -35,6 +36,7 @@ public class CommentController {
 		comment.setArticalId(articalId);
 		comment.setUserId(userId);
 		comment.setContent(content);
+		comment.setReplyFloor(replyFloor);
 		
 		return this.commentService.publishComment(comment);
 	}

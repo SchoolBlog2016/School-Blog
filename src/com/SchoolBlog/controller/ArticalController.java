@@ -26,12 +26,14 @@ public class ArticalController {
 	
 	@RequestMapping("/getArtical")
 	@ResponseBody
-	public Map<String, Object> getArtical(@RequestParam int articalId,@RequestParam int userId){
+	public Map<String, Object> getArtical(
+			@RequestParam("articalId") int articalId,
+			@RequestParam("userId") int userId){
 		ArticalBean artical=this.articalService.getArtical(articalId);
 		int code=(artical!=null)?FinalModel.INTERNET_SUCCEED:FinalModel.INTERNET_ERREO;
 		Map<String, Object> request=new HashMap<String, Object>();
 		if(code==200){
-			//request.put("isLike", likeService.isLike(articalId, userId));
+			request.put("isLike", likeService.isLike(articalId, userId));
 			request.put("artical", artical);
 		}
 		return ResultHandler.handleJson("artical", request, code);
@@ -41,7 +43,7 @@ public class ArticalController {
 	@ResponseBody
 	public Map<String, Object> refreshArticalList(){
 		
-		return articalService.refrashArticalList();
+		return articalService.refrashArticalList(FinalModel.BLOG_TYPE);
 	}
 	
 	
@@ -49,23 +51,27 @@ public class ArticalController {
 	@ResponseBody
 	public Map<String, Object> freshArticalList(@RequestParam("articalId") int articalId){
 		
-		return articalService.getNextArticalListBytime(articalId);
+		return articalService.getNextArticalListBytime(articalId,FinalModel.BLOG_TYPE);
 	}
 	
 	@RequestMapping("/publish")
 	@ResponseBody
 	public Map<String, Object> publishArtical(
+			@RequestParam("articalId") int articalId,
 			@RequestParam("userId") int userId,
 			@RequestParam("title") String title,
 			@RequestParam("content") String content){
 		ArticalBean newArtical=new ArticalBean();
+		content=content.trim();
 		if(title.isEmpty()||content.isEmpty()){
 			return ResultHandler.handleJson("info", "NullTitleOrNullContent", FinalModel.INTERNET_ERREO);
 		}
+		newArtical.setId(articalId);
 		newArtical.setUserId(userId);
 		newArtical.setTitle(title);
 		newArtical.setContent(content);
 		newArtical.setStatus(FinalModel.PUBLISH_ARTICAL);
+		newArtical.setType(FinalModel.BLOG_TYPE);
 		
 		return this.articalService.pulishOrSaveArtical(newArtical);
 	}
@@ -85,8 +91,9 @@ public class ArticalController {
 		artical.setUserId(userId);
 		artical.setTitle(title);
 		artical.setContent(content);
+		artical.setType(FinalModel.BLOG_TYPE);
 		artical.setStatus(FinalModel.SAVE_ARTICAL);
-		if(articalId<0){
+		if(articalId<=0){
 			return this.articalService.pulishOrSaveArtical(artical);
 		}
 		return this.articalService.reSaveArtical(artical);
@@ -99,7 +106,7 @@ public class ArticalController {
 			@RequestParam("articalId") int articalId,
 			@RequestParam("addContent") String addString){
 		
-		
 		return this.articalService.addContent(articalId, addString);
 	}
+	
 }

@@ -1,7 +1,7 @@
 package com.SchoolBlog.model;
 
 public class Product {
-	private static final long serialVersionUID=748392348L;
+	//private static final long serialVersionUID=748392348L;
 	private String name;
 	private String description;
 	private float price;

@@ -1,11 +1,14 @@
 package com.SchoolBlog.service.Impl;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import com.SchoolBlog.dao.ArticalDao;
 import com.SchoolBlog.dao.LikeDao;
 import com.SchoolBlog.model.FinalModel;
 import com.SchoolBlog.service.LikeService;
+import com.SchoolBlog.util.ResultHandler;
 
 public class LikeServiceImpl implements LikeService {
 	@Resource
@@ -14,18 +17,19 @@ public class LikeServiceImpl implements LikeService {
 	private LikeDao likeDao;
 
 	@Override
-	public boolean updateLike(int articalId, int userId, boolean isAddLike) {
+	public Map<String, Object> updateLike(int articalId, int userId, boolean isAddLike) {
+		boolean flag=false;
+		if(isAddLike){
+			flag=this.likeDao.addLike(articalId, userId);
+		}else{
+			flag=this.likeDao.delLike(articalId, userId);
+		}
+		if(!flag){
+			return ResultHandler.handleJson("info", "Ê§°Ü", FinalModel.INTERNET_ERREO);
+		}
 		int code=this.articalDao.updateLikeNum(articalId, isAddLike)?
 				FinalModel.INTERNET_SUCCEED:FinalModel.INTERNET_ERREO;
-		boolean updateSucceed=false;
-		if(FinalModel.INTERNET_SUCCEED==code){
-			if(isAddLike){
-				updateSucceed=this.likeDao.addLike(articalId, userId);
-			}else{
-				updateSucceed=this.likeDao.delLike(articalId, userId);
-			}
-		}
-		return updateSucceed;
+		return ResultHandler.handleJson("like", isAddLike, code);
 	}
 
 	@Override
